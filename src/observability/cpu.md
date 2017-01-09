@@ -1,18 +1,19 @@
 # CPU
 ## Utilization
-### System Wide
-`vmstat 1`中cpu欄位的us、sy、wa總和
-* us: user time
-* sy: system time
-* wa: waiting time for IO
-
-`mpstat`欄位中除了%idle和%iowait之外的總和
+#### System-wide
+1. `vmstat 1`: `cpu`欄位的`us`、`sy`、`st`總和
+  * `us`: user time
+  * `sy`: system time
+  * `st`: time stolen from a virtual machine
+1. `mpstat -P ALL`: 欄位中除了`%idle`和`%iowait`之外的總和
+1. `sar -u`: 欄位中除了`%idle`和`%iowait`之外的總和
 
 ## Saturation
-### System Wide
-`vmstat 1`當中r > CPU數量
-* r: #runnable process，包括running和waiting for run time
-* b: #uninterruptible process
+#### System-wide
+1. `vmstat 1`: `procs`欄位的`r` > CPU數量
+  * `r`: #runnable process，包括running和waiting for run time
+  * `b`: #uninterruptible process
+1. `sar -q`: `runq-sz` > CPU數量
 
 ## Examples
 ```console
@@ -32,8 +33,6 @@ procs -----------------------memory---------------------- ---swap-- -----io---- 
 ```
 ```console
 # mpstat -P ALL 1
-Linux 4.8.0-32-generic (qvs-ThinkCentre-M92p)   01/06/2017      _x86_64_        (8 CPU)
-
 04:30:01 PM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
 04:30:02 PM  all   62.45    0.00    1.13    0.00    0.00    0.00    0.00    0.00    0.00   36.42
 04:30:02 PM    0   64.00    0.00    4.00    0.00    0.00    0.00    0.00    0.00    0.00   32.00
@@ -44,4 +43,20 @@ Linux 4.8.0-32-generic (qvs-ThinkCentre-M92p)   01/06/2017      _x86_64_        
 04:30:02 PM    5    2.02    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00   97.98
 04:30:02 PM    6  100.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00
 04:30:02 PM    7   95.96    0.00    4.04    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+```
+```console
+#  sar -q 1 11
+02:45:25 PM   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked
+02:45:26 PM         6       774      0.85      0.28      0.14         0
+02:45:27 PM         6       774      0.85      0.28      0.14         0
+02:45:28 PM         5       774      1.02      0.33      0.16         0
+02:45:29 PM         6       774      1.02      0.33      0.16         0
+02:45:30 PM         6       774      1.02      0.33      0.16         0
+02:45:31 PM         2       771      1.02      0.33      0.16         0
+02:45:32 PM         2       771      1.02      0.33      0.16         0
+02:45:33 PM         2       771      1.10      0.35      0.17         0
+02:45:34 PM         0       769      1.10      0.35      0.17         0
+02:45:35 PM         0       769      1.10      0.35      0.17         0
+02:45:36 PM         0       769      1.10      0.35      0.17         0
+Average:            3       772      1.02      0.33      0.16         0
 ```
