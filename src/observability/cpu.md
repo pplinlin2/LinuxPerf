@@ -8,6 +8,10 @@
 1. `mpstat -P ALL`: 欄位中除了`%idle`和`%iowait`之外的總和
 1. `sar -u`: 欄位中除了`%idle`和`%iowait`之外的總和
 
+#### Per-process
+1. `top`: `%CPU`欄位, `htop`: `CPU%`欄位
+1. `pidstat 1`: `%CPU`欄位
+
 ## Saturation
 #### System-wide
 1. `vmstat 1`: `procs`欄位的`r` > CPU數量
